@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Data;
 using MyApp.Models;
 using MyApp.Models.DTOs;
+using MyApp.Repositories;
 
 namespace MyApp.Controllers
 {
@@ -12,17 +13,18 @@ namespace MyApp.Controllers
     public class RegionController : ControllerBase
     {
         private readonly NZWalkDbContext _context;
-        
+        private readonly IRegionRepository _regionRepository;
 
-        public RegionController(NZWalkDbContext context)
+        public RegionController(NZWalkDbContext context, IRegionRepository regionRepository)
         {
             _context = context;
+            _regionRepository = regionRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var regions = await _context.Regions.ToListAsync();
+            var regions = await _regionRepository.GetAllAsync();
             var regionDTO = new List<RegionDTO>();
             foreach (var region in regions)
             {
