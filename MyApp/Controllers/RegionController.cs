@@ -52,7 +52,7 @@ namespace MyApp.Controllers
             return Ok(region);
 
         }
-       [HttpPost]
+        [HttpPost]
         public IActionResult Create(AddRegionRequestDTO addRegionRequestDTO)
         {
             var regionDomainModel = new Region
@@ -68,8 +68,18 @@ namespace MyApp.Controllers
                 Id = regionDomainModel.Id,
                 Name = regionDomainModel.Name,
             };
+
+            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
+        }
+        [HttpPut]
+        public IActionResult Update(Guid id)
+        {
+            var regionToUpdate = _context.Regions.FirstOrDefault(x => x.Id == id);
+            if (regionToUpdate == null)
+            {
+                return NotFound();
+            }
             
-            return CreatedAtAction(nameof(GetById), new {id = regionDTO.Id},regionDTO);
         }
     }
 }
