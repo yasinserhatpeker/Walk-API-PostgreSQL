@@ -102,6 +102,20 @@ namespace MyApp.Controllers
 
         }
         [HttpDelete]
-        public IActionResult Delete(Guid id,)
+        [Route("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var regionDomainModel = _context.Regions.FirstOrDefault(x => x.Id == id);
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+            _context.Regions.Remove(regionDomainModel);
+            _context.SaveChanges();
+    
+           
+            return Ok();
+            
+        }
     }
 }
