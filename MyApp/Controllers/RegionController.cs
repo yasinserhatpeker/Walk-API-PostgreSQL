@@ -72,14 +72,36 @@ namespace MyApp.Controllers
             return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
         }
         [HttpPut]
-        public IActionResult Update(Guid id)
+        [Route("{id}")]
+        public IActionResult Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            var regionToUpdate = _context.Regions.FirstOrDefault(x => x.Id == id);
-            if (regionToUpdate == null)
+            // Checks if the region exist
+            var regionDomainModel = _context.Regions.FirstOrDefault(x => x.Id == id);
+            if (regionDomainModel == null)
             {
                 return NotFound();
             }
-            
+
+            // Map DTO to DomainModel
+
+            regionDomainModel.Name = updateRegionRequestDTO.Name;
+
+
+            _context.SaveChanges();
+
+            // Convert DomainModel to DTO
+            var regionDTO = new RegionDTO
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+            };
+
+            return Ok(regionDTO);
+
+
+
         }
+        [HttpDelete]
+        public IActionResult Delete(Guid id,)
     }
 }
