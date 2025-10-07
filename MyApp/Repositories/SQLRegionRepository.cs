@@ -28,7 +28,7 @@ public class SQLRegionRepository : IRegionRepository
         var existingRegion = _dbContext.Regions.FirstOrDefault(x => x.Id == id);
         if (existingRegion == null)
         {
-            return null;
+            return null!;
         }
         _dbContext.Regions.Remove(existingRegion);
         await _dbContext.SaveChangesAsync();
@@ -51,7 +51,7 @@ public class SQLRegionRepository : IRegionRepository
         var existingRegion = await _dbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
         if (existingRegion == null)
         {
-            return null;
+            return null!;
         }
         existingRegion.Name = region.Name;
 
