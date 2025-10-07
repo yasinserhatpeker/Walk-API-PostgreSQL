@@ -42,7 +42,7 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var region = await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            var region = await _regionRepository.GetByIdAsync(id);
             var regionDTO = new List<RegionDTO>();
             if (region == null)
             {
@@ -64,8 +64,8 @@ namespace MyApp.Controllers
                 Name = addRegionRequestDTO.Name,
             };
 
-            _context.Regions.Add(regionDomainModel);
-           await _context.SaveChangesAsync();
+         regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
+          
 
             var regionDTO = new RegionDTO()
             {
@@ -79,21 +79,18 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public  async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            // Checks if the region exist
-            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            var regionDomainModel = new Region
+            {
+                Name = updateRegionRequestDTO.Name
+            };
+
+            regionDomainModel = await _regionRepository.UpdateAsync(regionDomainModel,id);
             if (regionDomainModel == null)
             {
                 return NotFound();
             }
 
-            // Map DTO to DomainModel
-
-            regionDomainModel.Name = updateRegionRequestDTO.Name;
-
-
-           await _context.SaveChangesAsync();
-
-            // Convert DomainModel to DTO
+           // Convert DomainModel to DTO
             var regionDTO = new RegionDTO
             {
                 Id = regionDomainModel.Id,
@@ -109,15 +106,12 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            var regionDomainModel = await _regionRepository.DeleteAsync(id);
             if (regionDomainModel == null)
             {
                 return NotFound();
             }
-            _context.Regions.Remove(regionDomainModel);
-           await _context.SaveChangesAsync();
-
-            var regionDTO = new RegionDTO
+         var regionDTO = new RegionDTO
             {
                 Id = regionDomainModel.Id,
                 Name = regionDomainModel.Name,
