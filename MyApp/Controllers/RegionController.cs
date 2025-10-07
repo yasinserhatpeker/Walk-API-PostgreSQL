@@ -52,7 +52,24 @@ namespace MyApp.Controllers
             return Ok(region);
 
         }
+       [HttpPost]
+        public IActionResult Create(AddRegionRequestDTO addRegionRequestDTO)
+        {
+            var regionDomainModel = new Region
+            {
+                Name = addRegionRequestDTO.Name,
+            };
 
-        
+            _context.Regions.Add(regionDomainModel);
+            _context.SaveChanges();
+
+            var regionDTO = new RegionDTO()
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+            };
+            
+            return CreatedAtAction(nameof(GetById), new {id = regionDTO.Id},regionDTO);
+        }
     }
 }
