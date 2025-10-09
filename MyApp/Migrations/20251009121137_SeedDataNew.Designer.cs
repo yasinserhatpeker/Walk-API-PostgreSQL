@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Migrations
 {
     [DbContext(typeof(NZWalkDbContext))]
-    partial class NZWalkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009121137_SeedDataNew")]
+    partial class SeedDataNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,17 +80,17 @@ namespace MyApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48424"),
+                            Id = new Guid("0269afa2-4702-4f14-b3c7-835749324850"),
                             Name = "New Oakland"
                         },
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48414"),
+                            Id = new Guid("cc52959b-75f5-4f95-84bb-92508cec0b5a"),
                             Name = "New Zealand"
                         },
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48494"),
+                            Id = new Guid("6a0452d9-5e0c-4354-8672-36736c7a3eaf"),
                             Name = "New Jersey"
                         });
                 });

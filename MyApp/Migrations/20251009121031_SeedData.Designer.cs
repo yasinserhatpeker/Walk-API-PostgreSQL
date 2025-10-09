@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Migrations
 {
     [DbContext(typeof(NZWalkDbContext))]
-    partial class NZWalkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009121031_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,17 +48,17 @@ namespace MyApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("54466f17-02af-48e7-8ed3-5a4a8bfacf6f"),
+                            Id = new Guid("7a03fce2-fda2-42ac-a2a3-21d9a434d391"),
                             Name = "Easy"
                         },
                         new
                         {
-                            Id = new Guid("ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c"),
+                            Id = new Guid("a29e6dcf-7966-40ef-b322-7716381850a0"),
                             Name = "Medium"
                         },
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48434"),
+                            Id = new Guid("1c51f771-3e0f-4031-93b9-b7a9c7506cb2"),
                             Name = "Hard"
                         });
                 });
@@ -77,17 +80,17 @@ namespace MyApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48424"),
+                            Id = new Guid("cfcced9a-694f-4fce-b187-3969616347fd"),
                             Name = "New Oakland"
                         },
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48414"),
+                            Id = new Guid("6a7051de-7b78-4ee2-a900-3dad73eb6a83"),
                             Name = "New Zealand"
                         },
                         new
                         {
-                            Id = new Guid("f808ddcd-b5e5-4d80-b732-1ca523e48494"),
+                            Id = new Guid("ea6533a5-1095-44f3-946f-19e327e537ee"),
                             Name = "New Jersey"
                         });
                 });
