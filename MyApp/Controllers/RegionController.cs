@@ -1,3 +1,5 @@
+using System.Net.WebSockets;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,26 +17,19 @@ namespace MyApp.Controllers
         private readonly NZWalkDbContext _context;
         private readonly IRegionRepository _regionRepository;
 
-        public RegionController(NZWalkDbContext context, IRegionRepository regionRepository)
+        private readonly IMapper _mapper;
+        public RegionController(NZWalkDbContext context, IRegionRepository regionRepository, IMapper mapper)
         {
             _context = context;
             _regionRepository = regionRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var regions = await _regionRepository.GetAllAsync();
-            var regionDTO = new List<RegionDTO>();
-            foreach (var region in regions)
-            {
-                regionDTO.Add(new RegionDTO()
-                {
-                    Id = region.Id,
-                    Name = region.Name,
-                });
-            }
-            return Ok(regionDTO);
+            return Ok(_mapper.Map<List<RegionDTO>>(regions));
 
         }
 
@@ -42,36 +37,26 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var region = await _regionRepository.GetByIdAsync(id);
-            var regionDTO = new List<RegionDTO>();
-            if (region == null)
-            {
+            var regionDomain = await _regionRepository.GetByIdAsync(id);
+           
+            if(regionDomain == null) {
                 return NotFound();
             }
-            regionDTO.Add(new RegionDTO()
-            {
-                Id = region.Id,
-                Name = region.Name,
-            });
-            return Ok(region);
+            
+            return Ok(_mapper.Map<RegionDTO>(regionDomain));
 
         }
         [HttpPost]
         public async Task<IActionResult> Create(AddRegionRequestDTO addRegionRequestDTO)
         {
-            var regionDomainModel = new Region
-            {
-                Name = addRegionRequestDTO.Name,
-            };
+            var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
+           
 
-         regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
-          
+          regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
 
-            var regionDTO = new RegionDTO()
-            {
-                Id = regionDomainModel.Id,
-                Name = regionDomainModel.Name,
-            };
+
+            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
+
 
             return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
         }
@@ -79,10 +64,7 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public  async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            var regionDomainModel = new Region
-            {
-                Name = updateRegionRequestDTO.Name
-            };
+            var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDTO);
 
             regionDomainModel = await _regionRepository.UpdateAsync(regionDomainModel,id);
             if (regionDomainModel == null)
@@ -91,11 +73,7 @@ namespace MyApp.Controllers
             }
 
            // Convert DomainModel to DTO
-            var regionDTO = new RegionDTO
-            {
-                Id = regionDomainModel.Id,
-                Name = regionDomainModel.Name,
-            };
+            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
 
             return Ok(regionDTO);
 
@@ -111,11 +89,7 @@ namespace MyApp.Controllers
             {
                 return NotFound();
             }
-         var regionDTO = new RegionDTO
-            {
-                Id = regionDomainModel.Id,
-                Name = regionDomainModel.Name,
-            };
+            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
     
            
             return Ok(regionDTO);
