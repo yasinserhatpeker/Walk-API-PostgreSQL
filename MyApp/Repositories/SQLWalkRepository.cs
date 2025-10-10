@@ -26,4 +26,9 @@ public class SQLWalkRepository : IWalkRepository
         return await _context.Walks.ToListAsync();
         
     }
+
+    public async Task<Walk?> GetByIdAsync(Guid id)
+    {
+        return await _context.Walks.FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

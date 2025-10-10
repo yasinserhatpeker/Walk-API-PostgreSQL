@@ -43,6 +43,19 @@ namespace MyApp.Controllers
 
         }
 
-        
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var walkDomainModel = await _repository.GetByIdAsync(id);
+            if (walkDomainModel == null)
+            {
+                return NotFound();
+            }
+            // Convert DomainModel to DTO
+            var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
+            return Ok(walkDTO);
+
+        }
     }
 }
