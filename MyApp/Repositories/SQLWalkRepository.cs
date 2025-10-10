@@ -22,6 +22,20 @@ public class SQLWalkRepository : IWalkRepository
         return walk;
     }
 
+    public async Task<Walk> DeleteAsync(Guid id)
+    {
+        var existingRegion = _DbContext.Walks.FirstOrDefault(x => x.Id == id);
+        if (existingRegion == null)
+        {
+            return null!;
+        }
+        _DbContext.Walks.Remove(existingRegion);
+        await _DbContext.SaveChangesAsync();
+        return existingRegion;
+
+
+    }
+
     public async Task<List<Walk>> GetAllAsync()
     {
         return await _DbContext.Walks.ToListAsync();

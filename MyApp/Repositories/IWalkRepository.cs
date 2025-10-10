@@ -13,4 +13,7 @@ public interface IWalkRepository
 
    Task<Walk> UpdateAsync(Walk walk, Guid id);
 
+   Task<Walk> DeleteAsync(Guid id);
+
+
 } 
