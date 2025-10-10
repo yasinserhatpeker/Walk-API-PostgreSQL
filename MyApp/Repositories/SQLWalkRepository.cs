@@ -1,4 +1,5 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Data;
 using MyApp.Models;
 
@@ -18,5 +19,11 @@ public class SQLWalkRepository : IWalkRepository
         await _context.Walks.AddAsync(walk);
         await _context.SaveChangesAsync();
         return walk;
+    }
+
+    public async Task<List<Walk>> GetAllAsync()
+    {
+        return await _context.Walks.ToListAsync();
+        
     }
 }

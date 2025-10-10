@@ -20,7 +20,7 @@ namespace MyApp.Controllers
             _repository = repository;
         }
         [HttpPost]
-        
+
         public async Task<IActionResult> Create(AddWalkRequestDTO addWalkRequestDTO)
         {
             // Map DTO to DomainModel 
@@ -35,5 +35,14 @@ namespace MyApp.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var walks = await _repository.GetAllAsync();
+            return Ok(walks);
+
+        }
+
+        
     }
 }
