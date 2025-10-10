@@ -38,9 +38,10 @@ namespace MyApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var walks = await _walkRepository.GetAllAsync();
-            return Ok(walks);
+            var walksDomainModel = await _walkRepository.GetAllAsync();
 
+            // Map DomainModel to DTO
+           return Ok(_mapper.Map<List<WalkDTO>>(walksDomainModel));
         }
 
         [HttpGet]
