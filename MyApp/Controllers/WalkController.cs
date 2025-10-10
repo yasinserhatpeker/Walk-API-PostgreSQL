@@ -57,5 +57,13 @@ namespace MyApp.Controllers
             return Ok(walkDTO);
 
         }
+        [HttpPut]
+        [Route("{id}")]
+
+        public async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
+        {
+            // Map DTO to DomainModel
+        } 
+
     }
 }

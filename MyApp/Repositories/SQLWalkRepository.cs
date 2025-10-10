@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Data;
 using MyApp.Models;
@@ -7,28 +8,48 @@ namespace MyApp.Repositories;
 
 public class SQLWalkRepository : IWalkRepository
 {
-    private readonly NZWalkDbContext _context;
+    private readonly NZWalkDbContext _DbContext;
 
-    public SQLWalkRepository(NZWalkDbContext context)
+    public SQLWalkRepository(NZWalkDbContext DbContext)
     {
-        _context = context;
+        _DbContext = DbContext;
     }
 
     public async Task<Walk> CreateAsync(Walk walk)
     {
-        await _context.Walks.AddAsync(walk);
-        await _context.SaveChangesAsync();
+        await _DbContext.Walks.AddAsync(walk);
+        await _DbContext.SaveChangesAsync();
         return walk;
     }
 
     public async Task<List<Walk>> GetAllAsync()
     {
-        return await _context.Walks.ToListAsync();
+        return await _DbContext.Walks.ToListAsync();
         
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)
     {
-        return await _context.Walks.FirstOrDefaultAsync(x => x.Id == id);
+        return await _DbContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Walk> UpdateAsync(Walk walk, Guid id)
+    {
+        var existingWalk = await _DbContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+        if (existingWalk == null)
+        {
+            return null!;
+        }
+        existingWalk.Name = walk.Name;
+        existingWalk.Description = walk.Description;
+        existingWalk.Difficulty = walk.Difficulty;
+        existingWalk.DifficultyId = walk.DifficultyId;
+        existingWalk.LengthinKm = walk.LengthinKm;
+        existingWalk.WalkImageUrl = walk.WalkImageUrl;
+        existingWalk.RegionId = walk.RegionId;
+
+        await _DbContext.SaveChangesAsync();
+        return existingWalk;
+
     }
 }

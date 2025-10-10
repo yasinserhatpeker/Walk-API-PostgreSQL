@@ -11,4 +11,6 @@ public interface IWalkRepository
 
    Task<Walk?> GetByIdAsync(Guid id);
 
+   Task<Walk> UpdateAsync(Walk walk, Guid id);
+
 } 

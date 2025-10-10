@@ -12,7 +12,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<Region, RegionDTO>().ReverseMap();
         CreateMap<AddRegionRequestDTO, Region>().ReverseMap();
         CreateMap<UpdateRegionRequestDTO, Region>().ReverseMap();
+        CreateMap<Walk, WalkDTO>().ReverseMap();
         CreateMap<AddWalkRequestDTO, Walk>().ReverseMap();
-        CreateMap<Walk,WalkDTO>().ReverseMap();
+        CreateMap<UpdateRegionRequestDTO,Walk>().ReverseMap();
    }
 }
