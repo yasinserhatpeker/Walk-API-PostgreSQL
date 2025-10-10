@@ -14,15 +14,30 @@ namespace MyApp.Controllers
     [ApiController]
     public class RegionController : ControllerBase
     {
-        private readonly NZWalkDbContext _context;
+        
         private readonly IRegionRepository _regionRepository;
 
         private readonly IMapper _mapper;
-        public RegionController(NZWalkDbContext context, IRegionRepository regionRepository, IMapper mapper)
+        public RegionController(IRegionRepository regionRepository, IMapper mapper)
         {
-            _context = context;
+            
             _regionRepository = regionRepository;
             _mapper = mapper;
+        }
+
+          [HttpPost]
+        public async Task<IActionResult> Create(AddRegionRequestDTO addRegionRequestDTO)
+        {
+            var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
+           
+
+          regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
+
+
+            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
+
+
+            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
         }
 
         [HttpGet]
@@ -46,20 +61,7 @@ namespace MyApp.Controllers
             return Ok(_mapper.Map<RegionDTO>(regionDomain));
 
         }
-        [HttpPost]
-        public async Task<IActionResult> Create(AddRegionRequestDTO addRegionRequestDTO)
-        {
-            var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
-           
-
-          regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
-
-
-            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
-
-
-            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
-        }
+      
         [HttpPut]
         [Route("{id}")]
         public  async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
