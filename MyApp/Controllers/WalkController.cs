@@ -19,7 +19,8 @@ namespace MyApp.Controllers
             _mapper = mapper;
             _repository = repository;
         }
-
+        [HttpPost]
+        
         public async Task<IActionResult> Create(AddWalkRequestDTO addWalkRequestDTO)
         {
             // Map DTO to DomainModel 
