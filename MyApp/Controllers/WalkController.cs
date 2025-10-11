@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.CustomActionFilters;
 using MyApp.Models;
 using MyApp.Models.DTOs;
 using MyApp.Repositories;
@@ -20,11 +21,11 @@ namespace MyApp.Controllers
             _walkRepository = repository;
         }
         [HttpPost]
+        [ValidateModel]
 
         public async Task<IActionResult> Create(AddWalkRequestDTO addWalkRequestDTO)
         {
-            if (ModelState.IsValid)
-            {
+            
                 // Map DTO to DomainModel 
                 var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDTO);
 
@@ -35,11 +36,7 @@ namespace MyApp.Controllers
 
                 return Ok(walkDTO);
 
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+           
 
 
         }
@@ -68,11 +65,11 @@ namespace MyApp.Controllers
         }
         [HttpPut]
         [Route("{id}")]
+        [ValidateModel]
 
         public async Task<IActionResult> Update(UpdateWalkRequestDTO updateWalkRequestDTO,Guid id)
         {
-            if (ModelState.IsValid)
-            {
+            
                 // Map DTO to DomainModel
                 var walkDomainModel = _mapper.Map<Walk>(updateWalkRequestDTO);
 
@@ -85,16 +82,7 @@ namespace MyApp.Controllers
                 var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
                 return Ok(walkDTO);
 
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
-
-
-
-
-        }
+          }
 
         [HttpDelete]
         [Route("{id}")]

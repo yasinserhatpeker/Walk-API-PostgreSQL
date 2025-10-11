@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyApp.CustomActionFilters;
 using MyApp.Data;
 using MyApp.Models;
 using MyApp.Models.DTOs;
@@ -25,11 +26,11 @@ namespace MyApp.Controllers
             _mapper = mapper;
         }
 
-          [HttpPost]
+        [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create(AddRegionRequestDTO addRegionRequestDTO)
         {
-            if (ModelState.IsValid)
-            {
+           
 
                 var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
 
@@ -42,11 +43,7 @@ namespace MyApp.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
 
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+            
         }
 
         [HttpGet]
@@ -73,10 +70,10 @@ namespace MyApp.Controllers
       
         [HttpPut]
         [Route("{id}")]
+        [ValidateModel]
         public  async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            if (ModelState.IsValid)
-            {
+           
                 var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDTO);
 
                 regionDomainModel = await _regionRepository.UpdateAsync(regionDomainModel, id);
@@ -90,12 +87,8 @@ namespace MyApp.Controllers
 
                 return Ok(regionDTO);
 
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
-
+            
+            
 
 
         }
