@@ -14,4 +14,6 @@ public class WalkDTO
     public Guid DifficultyId { get; set; }
 
     public Guid RegionId { get; set; }
+
+    
 }
