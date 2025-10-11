@@ -23,15 +23,23 @@ namespace MyApp.Controllers
 
         public async Task<IActionResult> Create(AddWalkRequestDTO addWalkRequestDTO)
         {
-            // Map DTO to DomainModel 
-            var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDTO);
+            if (ModelState.IsValid)
+            {
+                // Map DTO to DomainModel 
+                var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDTO);
 
-            await _walkRepository.CreateAsync(walkDomainModel);
+                await _walkRepository.CreateAsync(walkDomainModel);
 
-            // Convert DomainModel to DTO
-            var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
+                // Convert DomainModel to DTO
+                var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
 
-            return Ok(walkDTO);
+                return Ok(walkDTO);
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
 
 
         }
@@ -63,17 +71,25 @@ namespace MyApp.Controllers
 
         public async Task<IActionResult> Update(UpdateWalkRequestDTO updateWalkRequestDTO,Guid id)
         {
-            // Map DTO to DomainModel
-            var walkDomainModel = _mapper.Map<Walk>(updateWalkRequestDTO);
-
-            await _walkRepository.UpdateAsync(walkDomainModel, id);
-            if (walkDomainModel == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                // Map DTO to DomainModel
+                var walkDomainModel = _mapper.Map<Walk>(updateWalkRequestDTO);
+
+                await _walkRepository.UpdateAsync(walkDomainModel, id);
+                if (walkDomainModel == null)
+                {
+                    return NotFound();
+                }
+                // Convert DomainModel to DTO
+                var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
+                return Ok(walkDTO);
+
             }
-            // Convert DomainModel to DTO
-            var walkDTO = _mapper.Map<WalkDTO>(walkDomainModel);
-            return Ok(walkDTO);
+            else
+            {
+                return BadRequest(ModelState);
+            }
 
 
 
