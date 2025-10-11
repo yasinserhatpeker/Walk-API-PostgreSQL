@@ -56,10 +56,9 @@ public class SQLWalkRepository : IWalkRepository
         }
         existingWalk.Name = walk.Name;
         existingWalk.Description = walk.Description;
-        existingWalk.Difficulty = walk.Difficulty;
-        existingWalk.DifficultyId = walk.DifficultyId;
         existingWalk.LengthinKm = walk.LengthinKm;
         existingWalk.WalkImageUrl = walk.WalkImageUrl;
+        existingWalk.DifficultyId = walk.DifficultyId;
         existingWalk.RegionId = walk.RegionId;
 
         await _DbContext.SaveChangesAsync();

@@ -61,10 +61,10 @@ namespace MyApp.Controllers
         [HttpPut]
         [Route("{id}")]
 
-        public async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
+        public async Task<IActionResult> Update(UpdateWalkRequestDTO updateWalkRequestDTO,Guid id)
         {
             // Map DTO to DomainModel
-            var walkDomainModel = _mapper.Map<Walk>(updateRegionRequestDTO);
+            var walkDomainModel = _mapper.Map<Walk>(updateWalkRequestDTO);
 
             await _walkRepository.UpdateAsync(walkDomainModel, id);
             if (walkDomainModel == null)
