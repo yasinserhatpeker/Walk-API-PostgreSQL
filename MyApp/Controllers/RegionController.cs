@@ -45,7 +45,7 @@ namespace MyApp.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
         }
 
@@ -75,18 +75,26 @@ namespace MyApp.Controllers
         [Route("{id}")]
         public  async Task<IActionResult> Update(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDTO);
-
-            regionDomainModel = await _regionRepository.UpdateAsync(regionDomainModel,id);
-            if (regionDomainModel == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDTO);
+
+                regionDomainModel = await _regionRepository.UpdateAsync(regionDomainModel, id);
+                if (regionDomainModel == null)
+                {
+                    return NotFound();
+                }
+
+                // Convert DomainModel to DTO
+                var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
+
+                return Ok(regionDTO);
+
             }
-
-           // Convert DomainModel to DTO
-            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
-
-            return Ok(regionDTO);
+            else
+            {
+                return BadRequest(ModelState);
+            }
 
 
 
