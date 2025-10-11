@@ -38,7 +38,7 @@ public class SQLWalkRepository : IWalkRepository
 
     public async Task<List<Walk>> GetAllAsync()
     {
-        return await _DbContext.Walks.ToListAsync();
+        return await _DbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         
     }
 
