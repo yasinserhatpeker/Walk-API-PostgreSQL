@@ -11,7 +11,7 @@ public class SQLRegionRepository : IRegionRepository
    private readonly NZWalkDbContext _dbContext;
    public SQLRegionRepository (NZWalkDbContext dbContext)
     {
-      _dbContext = dbContext;
+        _dbContext = dbContext;  
     }
 
     public async Task<Region> CreateAsync(Region region)

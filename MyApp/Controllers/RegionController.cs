@@ -28,16 +28,25 @@ namespace MyApp.Controllers
           [HttpPost]
         public async Task<IActionResult> Create(AddRegionRequestDTO addRegionRequestDTO)
         {
-            var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
-           
+            if (ModelState.IsValid)
+            {
 
-          regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
-
-
-            var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
+                var regionDomainModel = _mapper.Map<Region>(addRegionRequestDTO);
 
 
-            return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
+                regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
+
+
+                var regionDTO = _mapper.Map<RegionDTO>(regionDomainModel);
+
+
+                return CreatedAtAction(nameof(GetById), new { id = regionDTO.Id }, regionDTO);
+
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
