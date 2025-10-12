@@ -41,9 +41,9 @@ namespace MyApp.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, [FromQuery] string? sortBy, [FromQuery] bool? isAscending)
         {
-            var walksDomainModel = await _walkRepository.GetAllAsync(filterOn,filterQuery);
+            var walksDomainModel = await _walkRepository.GetAllAsync(filterOn,filterQuery,sortBy,isAscending ?? true);
 
             // Map DomainModel to DTO
            return Ok(_mapper.Map<List<WalkDTO>>(walksDomainModel));
