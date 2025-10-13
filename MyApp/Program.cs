@@ -9,10 +9,15 @@ using MyApp.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionStringAuth = builder.Configuration.GetConnectionString("AuthConnectionString");
 
 builder.Services.AddDbContext<NZWalkDbContext>(options =>
 {
     options.UseNpgsql(connectionString);
+});
+builder.Services.AddDbContext<NzWalkAuthDbContext>(options =>
+{
+    options.UseNpgsql(connectionStringAuth);
 });
 
 builder.Services.AddControllers();
