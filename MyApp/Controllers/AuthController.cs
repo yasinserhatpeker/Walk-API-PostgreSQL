@@ -45,9 +45,20 @@ namespace MyApp.Controllers
         // POST /api/Auth/Login
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
-            
+            var user = await _userManager.FindByEmailAsync(loginRequestDTO.Username);
+            if (user != null)
+            {
+                var checkPasswordResult = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
+                if (checkPasswordResult)
+                {
+                    // create token
+                    Ok();
+                }
+
+            }
+            return BadRequest("The user was not found");
         }
     }
 
