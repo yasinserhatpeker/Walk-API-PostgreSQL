@@ -18,7 +18,7 @@ namespace MyApp.Controllers
         // POST /api/Auth/Register
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterRequestDTO registerRequestDTO)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
         {
             var identityUser = new IdentityUser
             {
@@ -38,7 +38,20 @@ namespace MyApp.Controllers
                     return Ok("User was registered! Please login.");
                 }
             }
+
             return BadRequest("There's a error in registeration");
         }
+        
+        // POST /api/Auth/Login
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login()
+        {
+            
+        }
     }
+
+    
+       
+       
 }
