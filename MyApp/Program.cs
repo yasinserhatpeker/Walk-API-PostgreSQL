@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using MyApp.Data;
 using MyApp.Mappings;
 using MyApp.Repositories;
+using MyApp.Repositories.Implementations;
+using MyApp.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 

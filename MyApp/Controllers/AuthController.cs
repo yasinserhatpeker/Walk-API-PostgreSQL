@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Models.DTOs.Auth;
+using MyApp.Repositories.Interfaces;
 
 namespace MyApp.Controllers
 {
@@ -10,9 +11,11 @@ namespace MyApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        public AuthController(UserManager<IdentityUser> userManager)
+        private readonly ITokenRepository _tokenRepository;
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         // POST /api/Auth/Register
@@ -53,7 +56,18 @@ namespace MyApp.Controllers
                 var checkPasswordResult = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
                 if (checkPasswordResult)
                 {
-                    // create token
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if(roles != null)
+                    {   
+                        // create token
+                        var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+                        var response = new LoginResponseDTO
+                        {
+                            JwtToken = jwtToken,
+                        };
+                        return Ok(response);
+                    }
+                   
                     Ok();
                 }
 
