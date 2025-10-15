@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MyApp.Data;
 using MyApp.Mappings;
 using MyApp.Repositories;
@@ -25,7 +26,34 @@ builder.Services.AddDbContext<NzWalkAuthDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "NZ Walks API ", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+          {
+            new OpenApiSecurityScheme
+            {
+                Reference= new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id=JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme="Oauth2",
+              Name=JwtBearerDefaults.AuthenticationScheme,
+              In =ParameterLocation.Header,
+            },
+             new List<string>()
+         }
+    });
+});
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
