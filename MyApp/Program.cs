@@ -24,6 +24,7 @@ builder.Services.AddDbContext<NzWalkAuthDbContext>(options =>
     options.UseNpgsql(connectionStringAuth);
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Mvc;
 using MyApp.Data;
 using MyApp.Models.Entities;
 using MyApp.Repositories.Interfaces;
@@ -10,17 +11,17 @@ public class LocalImageRepository : IImageRepository
 {
 
     private readonly IWebHostEnvironment _webHostEnvironment;
-    private readonly HttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     private readonly NZWalkDbContext _dbContext;
 
-    public LocalImageRepository(IWebHostEnvironment webHostEnvironment, HttpContextAccessor httpContextAccessor, NZWalkDbContext dbContext)
+    public LocalImageRepository(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor, NZWalkDbContext dbContext)
     {
         _webHostEnvironment = webHostEnvironment;
         _httpContextAccessor = httpContextAccessor;
         _dbContext = dbContext;
     }
-
+   
     public async Task<Image> Upload(Image image)
     {
         var localFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", image.FileName, image.FileExtension);

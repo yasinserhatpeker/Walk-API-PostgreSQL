@@ -16,7 +16,7 @@ namespace MyApp.Controllers
         {
             _imageRepository = imageRepository;
         }
-
+       [HttpPost]
         public async Task<IActionResult> Upload(ImageUploadRequestDTO imageUploadRequestDTO)
         {
             ValidateFileUpload(imageUploadRequestDTO);
@@ -31,7 +31,7 @@ namespace MyApp.Controllers
                     FileName = imageUploadRequestDTO.FileName,
                     FileDescription = imageUploadRequestDTO.FileDescription,
                 };
-                
+
                 // user repository to upload the image
                 await _imageRepository.Upload(imageDomainModel);
                 return Ok(imageDomainModel);
