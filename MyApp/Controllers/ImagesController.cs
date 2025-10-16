@@ -14,7 +14,7 @@ namespace MyApp.Controllers
             ValidateFileUpload(imageUploadRequestDTO);
             if (ModelState.IsValid)
             {
-                // user repository
+                // user repository to upload the image
             }
             return BadRequest(ModelState);
         }
