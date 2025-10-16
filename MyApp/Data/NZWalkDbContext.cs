@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Models;
+using MyApp.Models.Entities;
 
 namespace MyApp.Data;
 
@@ -17,11 +18,13 @@ public class NZWalkDbContext : DbContext
 
     public DbSet<Walk> Walks { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+    public DbSet<Image> Images { get; set; }
+    
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    base.OnModelCreating(modelBuilder);
 
-        var difficulties = new List<Difficulty>()
+    var difficulties = new List<Difficulty>()
         {
            new Difficulty() {
 
@@ -41,22 +44,22 @@ public class NZWalkDbContext : DbContext
 
             Id = Guid.Parse("f808ddcd-b5e5-4d80-b732-1ca523e48434"),
              Name="Hard"
-             
+
 
            }
 
         };
-        modelBuilder.Entity<Difficulty>().HasData(difficulties);
+    modelBuilder.Entity<Difficulty>().HasData(difficulties);
 
-        var regions = new List<Region>()
+    var regions = new List<Region>()
         {
             new Region() { Id = Guid.Parse("f808ddcd-b5e5-4d80-b732-1ca523e48424"), Name = "New Oakland" },
             new Region() { Id=Guid.Parse("f808ddcd-b5e5-4d80-b732-1ca523e48414"), Name = "New Zealand" },
             new Region() { Id = Guid.Parse("f808ddcd-b5e5-4d80-b732-1ca523e48494"), Name = "New Jersey" }
         };
 
-        modelBuilder.Entity<Region>().HasData(regions);
-    }
+    modelBuilder.Entity<Region>().HasData(regions);
+  }
 }
 
 
