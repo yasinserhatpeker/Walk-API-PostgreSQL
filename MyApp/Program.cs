@@ -10,8 +10,14 @@ using MyApp.Mappings;
 using MyApp.Repositories;
 using MyApp.Repositories.Implementations;
 using MyApp.Repositories.Interfaces;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Information().CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var connectionStringAuth = builder.Configuration.GetConnectionString("AuthConnectionString");
