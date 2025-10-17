@@ -17,15 +17,17 @@ namespace MyApp.Controllers
     
     public class RegionController : ControllerBase
     {
-        
+
         private readonly IRegionRepository _regionRepository;
+        private readonly ILogger<RegionController> _logger;
 
         private readonly IMapper _mapper;
-        public RegionController(IRegionRepository regionRepository, IMapper mapper)
+        public RegionController(IRegionRepository regionRepository, IMapper mapper, ILogger<RegionController> logger)
         {
             
             _regionRepository = regionRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
